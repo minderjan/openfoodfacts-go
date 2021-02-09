@@ -13,7 +13,10 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"time"
 )
+
+const defaultUserAgent = "OpenFoodFacts - Go - v0.0 - https://github.com/openfoodfacts/openfoodfacts-go"
 
 var (
 	// ErrNoProduct is an error returned by Client.Product when the product could not be
@@ -29,10 +32,12 @@ var (
 // Client is an OpenFoodFacts client.
 // It uses the official API as data source.
 type Client struct {
-	locale   string
-	username string
-	password string
-	live     bool
+	locale    string
+	username  string
+	password  string
+	live      bool
+	client    *http.Client
+	userAgent string
 }
 
 // NewClient returns a Client that is capable of talking to the official OpenFoodFacts database via
@@ -47,12 +52,24 @@ type Client struct {
 //
 // If you are testing your application, you should use the test server in order to use the sandbox environment instead
 // of the live servers. See the Sandbox() method for more detail and an example.
+//
+// Timeout
+//
+// By default the HTTP client doesn't sets a timeout. See the Timeout(time.Duration) method for more detail.
+//
+// UserAgent
+//
+// Please set a UserAgent HTTP Header with the name of the app/service querying, the version, system and a URL if
+// you have one, so that you are not blocked by mistake
+// (e.g. CoolFoodApp - Go - Version 1.0 - https://coolfoodapp.com)
 func NewClient(locale, username, password string) Client {
 	return Client{
-		locale:   locale,
-		username: username,
-		password: password,
-		live:     true,
+		locale:    locale,
+		username:  username,
+		password:  password,
+		live:      true,
+		client:    &http.Client{},
+		userAgent: defaultUserAgent,
 	}
 }
 
@@ -63,7 +80,7 @@ func NewClient(locale, username, password string) Client {
 func (h *Client) Product(code string) (*Product, error) {
 	request := h.newRequest("GET", "/api/v0/product/%s.json", code)
 
-	resp, err := http.DefaultClient.Do(request)
+	resp, err := h.client.Do(request)
 
 	if err != nil {
 		return nil, err
@@ -121,6 +138,16 @@ func (h *Client) Sandbox() {
 	h.live = false
 }
 
+// Timeout configures the HTTP client timeout. As the net/http specifies a 0 timeout means no timeout.
+func (h *Client) Timeout(timeout time.Duration) {
+	h.client.Timeout = timeout
+}
+
+// UserAgent configures the HTTP User-Agent Header.
+func (h *Client) UserAgent(ua string) {
+	h.userAgent = ua
+}
+
 // newRequest is an internal function to setup the request based on the given
 // locale/liveness of the given Client.
 func (h *Client) newRequest(method, format string, args ...interface{}) *http.Request {
@@ -146,6 +173,10 @@ func (h *Client) newRequest(method, format string, args ...interface{}) *http.Re
 
 	if !h.live {
 		request.SetBasicAuth("off", "off")
+	}
+
+	if h.userAgent != "" {
+		request.Header.Set("User-Agent", h.userAgent)
 	}
 
 	return request
