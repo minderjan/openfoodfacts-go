@@ -1,3 +1,3 @@
-module github.com/openfoodfacts/openfoodfacts-go
+module github.com/minderjan/openfoodfacts-go
 
 go 1.14
