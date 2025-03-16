@@ -73,6 +73,8 @@ type Product struct {
 	EmbCodesOrig                                string         `json:"emb_codes_orig"`
 	EmbCodesTags                                []interface{}  `json:"emb_codes_tags"`
 	EntryDatesTags                              []string       `json:"entry_dates_tags"`
+	EcoscoreGrade                               string         `json:"ecoscore_grade"`
+	EcoscoreTags                                []string       `json:"ecoscore_tags"`
 	ExpirationDate                              string         `json:"expiration_date"`
 	FruitsVegetablesNuts100GEstimate            json.Number    `json:"fruits-vegetables-nuts_100g_estimate"`
 	Ingredients                                 []Ingredient   `json:"ingredients"`
@@ -81,7 +83,7 @@ type Product struct {
 	IngredientsFromPalmOilNumber                int            `json:"ingredients_from_palm_oil_n"`
 	IngredientsFromPalmOilTags                  []interface{}  `json:"ingredients_from_palm_oil_tags"`
 	IngredientsIdsDebug                         []string       `json:"ingredients_ids_debug"`
-	IngredientsN                                int            `json:"ingredients_n"`
+	IngredientsN                                json.Number    `json:"ingredients_n"`
 	IngredientsNTags                            []string       `json:"ingredients_n_tags"`
 	IngredientsTags                             []string       `json:"ingredients_tags"`
 	IngredientsText                             string         `json:"ingredients_text"`
@@ -106,6 +108,8 @@ type Product struct {
 	LanguagesHierarchy                          []string       `json:"languages_hierarchy"`
 	LanguagesTags                               []string       `json:"languages_tags"`
 	Locale                                      string         `json:"lc"`
+	ManufacturingPlaces                         string         `json:"manufacturing_places"`
+	ManufacturingPlacesTags                     []string       `json:"manufacturing_places_tags"`
 	MaxImgId                                    string         `json:"max_imgid"`
 	NewAdditivesNumber                          int            `json:"new_additives_n"`
 	NoNutritionData                             interface{}    `json:"no_nutrition_data"`
@@ -131,21 +135,20 @@ type Product struct {
 	PurchasePlaces                              string         `json:"purchase_places"`
 	PurchasePlacesTags                          []interface{}  `json:"purchase_places_tags"`
 	Quantity                                    string         `json:"quantity"`
-	//TODO reenable once https://github.com/openfoodfacts/openfoodfacts-server/issues/2800 is closed
-	// Rev                                         string         `json:"rev"`
-	ScansNumber          int           `json:"scans_n"`
-	ServingQuantity      json.Number   `json:"serving_quantity"`
-	ServingSize          string        `json:"serving_size"`
-	SortKey              int           `json:"sortkey"`
-	States               string        `json:"states"`
-	StatesHierarchy      []string      `json:"states_hierarchy"`
-	StatesTags           []string      `json:"states_tags"`
-	Stores               string        `json:"stores"`
-	StoresTags           []interface{} `json:"stores_tags"`
-	Traces               string        `json:"traces"`
-	TracesHierarchy      []string      `json:"traces_hierarchy"`
-	TracesTags           []string      `json:"traces_tags"`
-	UniqueScansNumber    int           `json:"unique_scans_n"`
-	UnknownNutrientsTags []interface{} `json:"unknown_nutrients_tags"`
-	UpdateKey            string        `json:"update_key"`
+	Rev                                         json.Number    `json:"rev"`
+	ScansNumber                                 int            `json:"scans_n"`
+	ServingQuantity                             json.Number    `json:"serving_quantity"`
+	ServingSize                                 string         `json:"serving_size"`
+	SortKey                                     int            `json:"sortkey"`
+	States                                      string         `json:"states"`
+	StatesHierarchy                             []string       `json:"states_hierarchy"`
+	StatesTags                                  []string       `json:"states_tags"`
+	Stores                                      string         `json:"stores"`
+	StoresTags                                  []interface{}  `json:"stores_tags"`
+	Traces                                      string         `json:"traces"`
+	TracesHierarchy                             []string       `json:"traces_hierarchy"`
+	TracesTags                                  []string       `json:"traces_tags"`
+	UniqueScansNumber                           int            `json:"unique_scans_n"`
+	UnknownNutrientsTags                        []interface{}  `json:"unknown_nutrients_tags"`
+	UpdateKey                                   string         `json:"update_key"`
 }
